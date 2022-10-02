@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slider</title>
+    <style>
+      *,
+      *::after,
+      *::before {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      body {
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-image: url(./one.webp);
+      }
+
+      body::before {
+        content: "";
+        background-color: rgba(0, 0, 0, 0.6);
+        position: absolute;
+        inset: 0;
+        z-index: -2;
+      }
+
+      .container {
+        width: 60vw;
+        height: 40vh;
+        position: relative;
+      }
+
+      .container .ele {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .container .ele.active {
+        opacity: 100%;
+      }
+
+      .left,
+      .right {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .left {
+        left: 0;
+      }
+
+      .right {
+        right: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="ele active" style="background-image: url(./one.webp)"></div>
+      <div class="ele" style="background-image: url(./two.webp)"></div>
+      <div class="ele" style="background-image: url(./three.webp)"></div>
+      <button class="left">LEFT</button>
+      <button class="right">RIGHT</button>
+    </div>
+
+    <script>
+      let leftBtn = document.querySelector(".left");
+      let rightBtn = document.querySelector(".right");
+      let eles = document.querySelectorAll(".ele");
+      let actCount = 1;
+
+      leftBtn.addEventListener("click", doSomething);
+      rightBtn.addEventListener("click", doSomething);
+
+      function doSomething(e) {
+        if (e.srcElement.classList.contains("left")) {
+          console.log("left clicked");
+          actCount--;
+          console.log(actCount);
+          if (actCount < 1) {
+            actCount = eles.length;
+          }
+          console.log(actCount);
+          eles.forEach((ele, idx) => {
+            if (idx + 1 != actCount) ele.classList.remove("active");
+            else {
+              ele.classList.add("active");
+              document.body.style.backgroundImage = ele.style.backgroundImage;
+            }
+          });
+        } else {
+          console.log("right clicked");
+          actCount++;
+          if (actCount > eles.length) actCount = 1;
+
+          eles.forEach((ele, idx) => {
+            if (idx + 1 != actCount) ele.classList.remove("active");
+            else {
+              ele.classList.add("active");
+              document.body.style.backgroundImage = ele.style.backgroundImage;
+            }
+          });
+        }
+      }
+    </script>
+  </body>
+</html>
